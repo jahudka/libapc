@@ -13,4 +13,3 @@ clean:
 
 dist:
 	tsc
-	cp -f src/modules.d.ts dist/

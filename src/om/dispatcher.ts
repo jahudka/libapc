@@ -1,4 +1,4 @@
-import { Input, Message, Output } from 'midi';
+import { Input, MidiMessage, Output } from 'midi';
 import { Container, Control, Node } from './nodes';
 
 export class Dispatcher {
@@ -52,11 +52,11 @@ export class Dispatcher {
     }
   }
 
-  private handleMessage(dt: number, [status, id = 0, ...params]: Message): void {
+  private handleMessage(dt: number, [status, id = 0, ...params]: MidiMessage): void {
     this.map.get((status << 8) | id)?.handle(status, id, ...params);
   }
 
-  private handleSet(...message: number[]): void {
+  private handleSet(...message: MidiMessage): void {
     this.output.send(message);
   }
 }
