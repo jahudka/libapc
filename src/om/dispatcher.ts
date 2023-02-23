@@ -33,8 +33,8 @@ export class Dispatcher {
     this.output.closePort();
   }
 
-  add(node: Node): void {
-    if (node instanceof Container) {
+  add(node: Node, recursive: boolean = true): void {
+    if (recursive && node instanceof Container) {
       for (const child of node.children()) {
         this.add(child);
       }
