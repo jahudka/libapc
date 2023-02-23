@@ -1,0 +1,25 @@
+{
+  "name": "libapc",
+  "description": "NodeJS library for the Akai® APC 40 / APC Mini MIDI controllers",
+  "version": "1.0.0",
+  "license": "MIT",
+  "author": {
+    "name": "Dan Kadera",
+    "email": "me@subsonic.cz",
+    "url": "https://github.com/jahudka"
+  },
+  "homepage": "https://github.com/jahudka/libapc",
+  "repository": {
+    "type": "vcs",
+    "url": "https://github.com/jahudka/libapc.git"
+  },
+  "dependencies": {
+    "midi": "^2.0.0",
+    "reflect-metadata": "^0.1.13"
+  },
+  "devDependencies": {
+    "@tsconfig/node16": "^1.0.3",
+    "@types/node": "^18.14.0",
+    "typescript": "^4.9.5"
+  }
+}
