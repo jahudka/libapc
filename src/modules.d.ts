@@ -1,7 +1,7 @@
 declare module 'midi' {
-  export declare type Message = number[];
+  export type Message = number[];
 
-  export declare class Input {
+  export class Input {
     getPortCount(): number;
     getPortName(port: number): string;
     openPort(port: number): void;
@@ -12,7 +12,7 @@ declare module 'midi' {
     on(event: 'message', handler: (deltaTime: number, message: Message) => void): void;
   }
 
-  export declare class Output {
+  export class Output {
     getPortCount(): number;
     getPortName(port: number): string;
     openPort(port: number): void;
