@@ -18,12 +18,6 @@ export abstract class Container extends Node {
     super();
   }
 
-  public init() {
-    for (const child of this.children()) {
-      child.init();
-    }
-  }
-
   public children(keys?: false): Iterable<Node>;
   public children(keys: true): Iterable<[string | number, Node]>;
   public * children(keys?: boolean): Iterable<Node | [string | number, Node]> {
