@@ -29,6 +29,6 @@ export class Button extends Control {
   }
 
   set(state: number): void {
-    this.emit('set', MIDIMessageType.NoteOn | this.channel, this.note, state & 0xf0);
+    this.emit('set', MIDIMessageType.NoteOn | this.channel, this.note, state & 0xf7);
   }
 }

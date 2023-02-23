@@ -28,6 +28,6 @@ export class Encoder extends Control {
   }
 
   set(value: number): void {
-    this.emit('set', MIDIMessageType.CC | this.channel, this.cc, value & 0xf0);
+    this.emit('set', MIDIMessageType.CC | this.channel, this.cc, value & 0x7f);
   }
 }
