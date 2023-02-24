@@ -1,5 +1,5 @@
 import { ApcBinaryButtonState, ApcLEDButton } from '../common';
-import { Button, Container, Encoder, MIDIMessageType, Node, Property } from '../om';
+import { Button, Container, Encoder, EncoderMode, MIDIMessageType, Node, Property } from '../om';
 
 export enum Apc40EncoderMode {
   Off = 0,
@@ -8,18 +8,34 @@ export enum Apc40EncoderMode {
   Pan = 3,
 }
 
+function translateEncoderMode(mode: Apc40EncoderMode | EncoderMode): Apc40EncoderMode {
+  if (typeof mode === 'number') {
+    return mode;
+  }
+
+  switch (mode) {
+    case 'off': return Apc40EncoderMode.Off;
+    case 'gain':
+    case 'width':
+      return Apc40EncoderMode.Volume;
+    case 'pan': return Apc40EncoderMode.Pan;
+    case 'single':
+    default: return Apc40EncoderMode.Single;
+  }
+}
+
 export class Apc40Encoder extends Encoder {
   constructor(cc: number) {
     super(cc, 0, 0);
   }
 
   init(): void {
-    this.setMode(Apc40EncoderMode.Off);
+    this.setMode('off');
     super.init();
   }
 
-  setMode(mode: Apc40EncoderMode): void {
-    this.emit('set', MIDIMessageType.CC | this.channel, this.cc + 8, mode);
+  setMode(mode: Apc40EncoderMode | EncoderMode): void {
+    this.emit('set', MIDIMessageType.CC | this.channel, this.cc + 8, translateEncoderMode(mode));
   }
 }
 

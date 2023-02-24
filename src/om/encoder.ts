@@ -1,5 +1,5 @@
 import { Control } from './nodes';
-import { MIDIMessageType } from './types';
+import { EncoderMode, MIDIMessageType } from './types';
 
 export class Encoder extends Control {
   public readonly cc: number;
@@ -29,5 +29,9 @@ export class Encoder extends Control {
 
   set(value: number): void {
     this.emit('set', MIDIMessageType.CC | this.channel, this.cc, value & 0x7f);
+  }
+
+  setMode(mode: EncoderMode): void {
+    // this is a hint, encoders can implement modes however they wish
   }
 }
