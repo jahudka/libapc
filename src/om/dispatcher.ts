@@ -1,36 +1,28 @@
-import { Input, MidiMessage, Output } from 'midi';
+import { Adapter } from '../adapter';
 import { Container, Control, Node } from './nodes';
 
 export class Dispatcher {
-  private readonly input: Input;
-  private readonly output: Output;
-  private readonly inputPort: number | string;
-  private readonly outputPort: number | string;
+  private readonly adapter: Adapter;
   private readonly map: Map<number, Control> = new Map();
 
-  constructor(input: number | string, output: number | string) {
-    this.input = new Input();
-    this.output = new Output();
-    this.inputPort = input;
-    this.outputPort = output;
+  constructor(adapter: Adapter) {
+    this.adapter = adapter;
     this.handleMessage = this.handleMessage.bind(this);
     this.handleSet = this.handleSet.bind(this);
   }
 
-  init(): void {
-    this.input.openPort(resolvePort(this.input, this.inputPort));
-    this.output.openPort(resolvePort(this.output, this.outputPort));
-    this.input.on('message', this.handleMessage);
+  async init(): Promise<void> {
+    this.adapter.init();
+    this.adapter.on('message', this.handleMessage);
   }
 
-  destroy(): void {
+  async destroy(): Promise<void> {
     for (const node of new Set(this.map.values())) {
       node.off('set', this.handleSet);
     }
 
     this.map.clear();
-    this.input.closePort();
-    this.output.closePort();
+    await this.adapter.destroy();
   }
 
   add(node: Node, recursive: boolean = true): void {
@@ -52,25 +44,11 @@ export class Dispatcher {
     }
   }
 
-  private handleMessage(dt: number, [status, id = 0, ...params]: MidiMessage): void {
+  private handleMessage([status, id = 0, ...params]: number[]): void {
     this.map.get((status << 8) | id)?.handle(status, id, ...params);
   }
 
-  private handleSet(...message: MidiMessage): void {
-    this.output.send(message);
+  private async handleSet(...message: number[]): Promise<void> {
+    await this.adapter.send(message);
   }
-}
-
-function resolvePort(io: Input | Output, port: number | string): number {
-  if (typeof port === 'number') {
-    return port;
-  }
-
-  for (let i = 0, n = io.getPortCount(); i < n; ++i) {
-    if (io.getPortName(i) === port) {
-      return i;
-    }
-  }
-
-  throw new Error(`Unknown MIDI port: ${port}`);
 }

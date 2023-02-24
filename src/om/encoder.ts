@@ -1,7 +1,11 @@
-import { Control } from './nodes';
+import { Control, NodeEvents } from './nodes';
 import { EncoderMode, MIDIMessageType } from './types';
 
-export class Encoder extends Control {
+export interface EncoderEvents extends NodeEvents {
+  change: [encoder: Encoder, value: number];
+}
+
+export class Encoder extends Control<EncoderEvents> {
   public readonly cc: number;
   public readonly channel: number;
   private readonly initial?: number;

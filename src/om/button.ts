@@ -1,7 +1,12 @@
-import { Control } from './nodes';
+import { Control, NodeEvents } from './nodes';
 import { MIDIMessageType } from './types';
 
-export class Button extends Control {
+export interface ButtonEvents extends NodeEvents {
+  press: [button: Button];
+  release: [button: Button];
+}
+
+export class Button extends Control<ButtonEvents> {
   private readonly note: number;
   private readonly channel: number;
   private readonly initial?: number;

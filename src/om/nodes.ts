@@ -1,10 +1,14 @@
-import { EventEmitter } from 'node:events';
+import { EventEmitter, EventMap } from '@mxfriend/osc';
 
-export abstract class Node extends EventEmitter {
+export interface NodeEvents extends EventMap {
+  set: [...message: number[]];
+}
+
+export abstract class Node<TEvents extends NodeEvents = NodeEvents> extends EventEmitter<TEvents> {
   public init(): void {}
 }
 
-export abstract class Control extends Node {
+export abstract class Control<TEvents extends NodeEvents = NodeEvents> extends Node<TEvents> {
   constructor() {
     super();
   }
@@ -13,7 +17,7 @@ export abstract class Control extends Node {
   public abstract handle(status: number, id: number, ...params: number[]): void;
 }
 
-export abstract class Container extends Node {
+export abstract class Container<TEvents extends NodeEvents = NodeEvents> extends Node<TEvents> {
   constructor() {
     super();
   }
