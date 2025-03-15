@@ -1,5 +1,5 @@
 import { EventEmitter } from '@mxfriend/osc';
-import { Input, MidiMessage, Output } from 'midi';
+import { Input, MidiMessage, Output } from '@julusian/midi';
 import { Adapter, AdapterEvents } from './types';
 
 export class MidiAdapter extends EventEmitter<AdapterEvents> implements Adapter {
